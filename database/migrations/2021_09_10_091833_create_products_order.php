@@ -17,6 +17,7 @@ class CreateProductsOrder extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->decimal('price',8,2);
         });
     }
 

@@ -18,6 +18,7 @@ class CreateUsers extends Migration
             $table->string('fio', 255);
             $table->string('email', 255)->unique();
             $table->string('password', 255);
+            $table->string('user_token', 255)->nullable();
             $table->foreignId('role_id')->constrained()->onDelete('cascade');
         });
     }

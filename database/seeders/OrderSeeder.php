@@ -23,12 +23,5 @@ class OrderSeeder extends Seeder
                 'user_id' => User::where('email', 'user@shop.ru')->first()->id,
             ]);
 
-        Order::all()->each(function ($order) {
-            $order->price = $order->products->reduce(function ($sum, $item) {
-                return $sum + $item->product->price;
-            });
-            $order->save();
-        });
-
     }
 }

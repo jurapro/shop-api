@@ -24,7 +24,6 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => Role::where('code', 'user')->first()->users->random(),
-            'price' => rand(100, 10000)
         ];
     }
 }

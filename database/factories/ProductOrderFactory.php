@@ -26,6 +26,18 @@ class ProductOrderFactory extends Factory
         return [
             'product_id' => Product::all()->random(),
             'order_id' => Order::all()->random(),
+            'price' => 0
         ];
     }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (ProductOrder $productOrder) {
+            //$productOrder->price = Product::find($productOrder->product_id)->price;
+            $productOrder->price = $productOrder->product->price;
+            $productOrder->save();
+        });
+    }
+
+
 }

@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Site;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +16,6 @@ use App\Http\Controllers\Site;
 */
 
 
-
+Route::get('/', function () {
+    return [1, 2, 3, 4];
+});
