@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/login', [UserController::class, 'login']);
+Route::get('/logout', [UserController::class, 'logout']);

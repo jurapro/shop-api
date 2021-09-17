@@ -44,4 +44,32 @@ class UserController extends Controller
             ]
         ])->setStatusCode(401);
     }
+
+    public function logout(Request $request)
+    {
+        $token = $request->headers->get('Authorization');
+        $token = preg_filter('/^Bearer (.*)$/', '\1', $token);
+
+        $user = User::where('user_token', $token)->first();
+
+        if(!$user)
+        {
+            return response()->json([
+                'error' =>
+                [
+                    'code' => 401,
+                    'message' => 'Unauthorized',
+                ]
+            ])->setStatusCode(401);
+        }
+
+        $user->user_token = null;
+        $user->save();
+
+        return response()->json([
+            'data' => [
+                'message' => 'logout',
+            ],
+        ])->setStatusCode(200);
+    }
 }
