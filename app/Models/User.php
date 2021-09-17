@@ -43,6 +43,12 @@ class User extends Authenticatable
         return $this->user_token;
     }
 
+    public function clearToken()
+    {
+        $this->user_token = null;
+        $this->save();
+    }
+
     public function setRole(string $code)
     {
         $this->role_id = Role::where('code', 'user')->first()->id;

@@ -60,8 +60,7 @@ class UserController extends Controller
             ])->setStatusCode(401);
         }
 
-        $user->user_token = null;
-        $user->save();
+        $user->clearToken();
 
         return response()->json([
             'data' => [
