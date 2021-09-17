@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -19,7 +20,7 @@ class UserController extends Controller
         if($validator->fails()) {
             return response()->json([
                 'error' =>[
-                    'code'=>422,
+                    'code'=> 422,
                     'message'=>'Validation error',
                     'errors'=>$validator->errors()
                 ]
@@ -39,9 +40,47 @@ class UserController extends Controller
 
         return response()->json([
             'error' =>[
-                'code'=>401,
+                'code'=> 401,
                 'message'=>'Authentication failed',
             ]
         ])->setStatusCode(401);
+    }
+
+    public function signup(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'fio' => 'required',
+            'email'=>'required',
+            'password'=>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => [
+                    'code' => 422,
+                    'message' => 'Validation error',
+                    'errors' => [
+                        'key' => $validator->errors(),
+                    ]
+                ]
+            ])->setStatusCode(422);
+        }
+
+        User::insert([
+            'fio' => $request->fio,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role_id' => 2,
+        ]);
+
+        return [
+            'data' => [
+                'user_token' => User::all()->last()->generateToken(),
+            ]
+        ];
+    }
+
+    public function logout(Request $request)
+    {
     }
 }
