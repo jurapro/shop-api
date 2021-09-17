@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
-
+use Illuminate\Http\Request;
 
 class User extends Authenticatable
 {
@@ -35,6 +35,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    static function createUser(Request $request)
+    {
+        $user = new User;
+        $user->fio = $request['fio'];
+        $user->email = $request['email'];
+        $user->password = Hash::make($request['password']);
+        $user->role_id = 2;
+        $user->generateToken();
+        return $user;
+    }
 
     public function generateToken()
     {

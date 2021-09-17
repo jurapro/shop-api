@@ -17,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('/login', [UserController::class, 'login']);
+Route::group(['middleware' => 'APIForGuest'], function () {
+    Route::post('/login', [UserController::class, 'login']);
+    Route::post('/signup', [UserController::class, 'signup']);
+});
+
+Route::group(['middleware' => 'APIForUser'], function () {
+    Route::get('/logout', [UserController::class, 'logout']);
+});
