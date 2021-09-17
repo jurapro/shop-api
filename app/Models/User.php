@@ -42,4 +42,9 @@ class User extends Authenticatable
         $this->save();
         return $this->user_token;
     }
+
+    public function setRole(string $code)
+    {
+        $this->role_id = Role::where('code', 'user')->first()->id;
+    }
 }

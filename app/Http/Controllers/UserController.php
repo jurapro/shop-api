@@ -69,4 +69,33 @@ class UserController extends Controller
             ],
         ])->setStatusCode(200);
     }
+
+    public function signup(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email'=>'required',
+            'email' => 'unique:users',
+            'password'=>'required',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'error' =>[
+                    'code'=>422,
+                    'message'=>'Validation error',
+                    'errors'=>$validator->errors()
+                ]
+            ])->setStatusCode(422);
+        }
+
+        $user = new User($request->all());
+        $user->setRole('user');
+        $user->save();
+
+        return [
+            'data' => [
+                'user_token' => $user->generateToken()
+            ]
+        ];
+    }
 }
