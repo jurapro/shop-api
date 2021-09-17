@@ -47,10 +47,7 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        $token = $request->headers->get('Authorization');
-        $token = preg_filter('/^Bearer (.*)$/', '\1', $token);
-
-        $user = User::where('user_token', $token)->first();
+        $user = User::where('user_token', $request->bearerToken())->first();
 
         if(!$user)
         {
