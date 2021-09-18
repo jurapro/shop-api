@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,6 +35,15 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->setRole('user');
+        });
+    }
+
+
     public function generateToken()
     {
         $this->user_token = Hash::make(Str::random());
@@ -51,6 +59,6 @@ class User extends Authenticatable
 
     public function setRole(string $code)
     {
-        $this->role_id = Role::where('code', 'user')->first()->id;
+        $this->role_id = Role::where('code', $code)->first()->id;
     }
 }
