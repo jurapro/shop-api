@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApiException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Models\User;
@@ -13,6 +14,11 @@ class UserController extends Controller
 {
     public function login(LoginRequest $request)
     {
+        $user = User::where($request->all())->first();
+        if (!$user) {
+            throw new ApiException(401, 'Authentication failed');
+        }
+        Auth::login($user);
         return [
             'data' => [
                 'user_token' => Auth::user()->generateToken()
