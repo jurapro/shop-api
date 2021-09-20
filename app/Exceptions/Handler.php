@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -45,6 +47,12 @@ class Handler extends ExceptionHandler
         if ($e instanceof AuthorizationException) {
             $code = $e->getCode() !== 0 ? $e->getCode() : 403;
             throw new ApiException($code, $e->getMessage());
+        }
+        if ($e instanceof ModelNotFoundException) {
+            throw new ApiException(404, 'Not found');
+        }
+        if ($e instanceof AuthenticationException) {
+            throw new ApiException(403, 'Login failed');
         }
         return parent::render($request, $e);
     }

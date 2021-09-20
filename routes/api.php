@@ -26,6 +26,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/logout', [UserController::class, 'logout'])->middleware(['auth:api']);
     Route::middleware(['can:isUser,App\Models\User'])->group(function () {
         Route::post('/cart/{product}', [ProductCartController::class, 'addProduct']);
-
+        Route::get('/cart', [ProductCartController::class, 'show']);
     });
 });

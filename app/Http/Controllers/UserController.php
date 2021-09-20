@@ -30,11 +30,11 @@ class UserController extends Controller
     {
         Auth()->user()->clearToken();
 
-        return response()->json([
+        return [
             'data' => [
                 'message' => 'logout',
             ],
-        ])->setStatusCode(200);
+        ];
     }
 
     public function signup(SignupRequest $request)
