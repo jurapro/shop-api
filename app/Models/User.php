@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         $this->role_id = Role::where('code', $code)->first()->id;
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

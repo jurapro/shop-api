@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +38,14 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof AuthorizationException) {
+            $code = $e->getCode() !== 0 ? $e->getCode() : 403;
+            throw new ApiException($code, $e->getMessage());
+        }
+        return parent::render($request, $e);
     }
 }
