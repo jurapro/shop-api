@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Http\Request;
+
 
 class User extends Authenticatable
 {
@@ -36,21 +35,40 @@ class User extends Authenticatable
         'password',
     ];
 
-    static function createUser(Request $request)
+    protected static function boot()
     {
-        $user = new User;
-        $user->fio = $request['fio'];
-        $user->email = $request['email'];
-        $user->password = Hash::make($request['password']);
-        $user->role_id = 2;
-        $user->generateToken();
-        return $user;
+        parent::boot();
+        self::creating(function ($model) {
+            $model->setRole('user');
+        });
     }
+
 
     public function generateToken()
     {
         $this->user_token = Hash::make(Str::random());
         $this->save();
         return $this->user_token;
+    }
+
+    public function clearToken()
+    {
+        $this->user_token = null;
+        $this->save();
+    }
+
+    public function setRole(string $code)
+    {
+        $this->role_id = Role::where('code', $code)->first()->id;
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(ProductCart::class);
     }
 }

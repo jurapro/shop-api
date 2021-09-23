@@ -11,8 +11,13 @@ class Order extends Model
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'user_id',
+    ];
+
     public function products()
     {
         return $this->hasMany(ProductOrder::class);
     }
+
 }

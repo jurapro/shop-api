@@ -12,4 +12,13 @@ class ProductCart extends Model
     protected $table = 'products_cart';
     public $timestamps = false;
 
+    protected $fillable = [
+        'user_id',
+        'product_id'
+    ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
