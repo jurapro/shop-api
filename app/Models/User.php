@@ -35,14 +35,6 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-        self::creating(function ($model) {
-            $model->setRole('user');
-        });
-    }
-
 
     public function generateToken()
     {

@@ -40,6 +40,7 @@ class UserController extends Controller
     public function signup(SignupRequest $request)
     {
         $user = User::create($request->all());
+        $user->setRole('user');
 
         return [
             'data' => [
