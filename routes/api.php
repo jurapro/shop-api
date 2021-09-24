@@ -28,4 +28,9 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('/cart/{product}', [ProductCartController::class, 'addProduct']);
         Route::get('/cart', [ProductCartController::class, 'show']);
     });
+    Route::middleware(['can:isAdmin,App\Models\User'])->group(function () {
+        Route::post('/product', [ProductController::class, 'add']);
+        Route::patch('/product/{product}', [ProductController::class, 'edit']);
+        Route::delete('/product/{product}', [ProductController::class, 'delete']);
+    });
 });
