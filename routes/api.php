@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductCartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/logout', [UserController::class, 'logout'])->middleware(['auth:api']);
     Route::middleware(['can:isUser,App\Models\User'])->group(function () {
         Route::post('/cart/{product}', [ProductCartController::class, 'addProduct']);
+        Route::delete('/cart/{product}', [ProductCartController::class, 'deleteProduct']);
         Route::get('/cart', [ProductCartController::class, 'show']);
+        Route::post('/order', [OrderController::class, 'createOrder']);
+        Route::get('/order', [OrderController::class, 'show']);
+
     });
 });
