@@ -31,6 +31,5 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/cart', [ProductCartController::class, 'show']);
         Route::post('/order', [OrderController::class, 'createOrder']);
         Route::get('/order', [OrderController::class, 'show']);
-
     });
 });

@@ -6,7 +6,7 @@ use App\Exceptions\ApiException;
 use App\Http\Resources\ProductCartResource;
 use App\Models\Product;
 use App\Models\ProductCart;
-use Illuminate\Support\Facades\Auth;
+
 
 
 class ProductCartController extends Controller
@@ -29,6 +29,7 @@ class ProductCartController extends Controller
         if (Auth()->user()->id !== $product->user_id)
         {
             throw new ApiException(403, 'Forbidden for you');
+
         }
 
         $product->delete();
